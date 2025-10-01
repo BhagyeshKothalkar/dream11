@@ -2,6 +2,7 @@
 ```shell
 git clone https://github.com/BhagyeshKothalkar/dream11
 cd dream11
+pip install -r requirements.txt
 mkdir -p data data/raw data/interim data/processed
 cd data/raw
 wget https://cricsheet.org/downloads/all_json.zip
