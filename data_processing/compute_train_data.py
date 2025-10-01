@@ -9,7 +9,7 @@ from compute_player_stats import calculate_player_data
 current_path = os.getcwd()
 parent_path = os.path.dirname(current_path)
 raw_data_path = os.path.join(parent_path, 'data/raw/')
-venue_data_path = os.path.join(parent_path, 'data/interim/venue_code.csv')
+# venue_data_path = os.path.join(parent_path, 'data/interim/venue_code.csv')
 dst_file = os.path.join(parent_path, 'data/processed/match_data.csv')
 player_data_dst = os.path.join(parent_path, 'data/processed/players/')
 
@@ -28,7 +28,7 @@ files = []
 for key in sorted(matches, key=matches.get):
     files.append(key)
 
-venue_data = pd.read_csv(venue_data_path, index_col='Venue')
+# venue_data = pd.read_csv(venue_data_path, index_col='Venue')
 
 players = {}
 match_tiers = ['club', 'international']
@@ -110,8 +110,9 @@ def compute_data():
 
         # venue
         location = data['info']['venue']
-        val = venue_data.loc[location]['Cluster_Assignment']
-        values.append(val)
+        # val = venue_data.loc[location]['Cluster_Assignment']
+        # values.append(val)
+        values.append(location)
 
         # club/international
         match_tier = data['info']['team_type']
