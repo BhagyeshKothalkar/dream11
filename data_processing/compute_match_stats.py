@@ -197,7 +197,7 @@ def calc_stats(
                                     ):
                                         continue
                                     fielder = wicket["fielders"][0]["name"]
-                                    df.loc[fielder,"runout(direct)"] += 1
+                                    df.loc[fielder, "runout(direct)"] += 1
                             else:
                                 df.loc[bowler, "runout(direct)"] += 1
 

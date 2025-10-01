@@ -17,8 +17,10 @@ player_data_dst = os.path.join(parent_path, "data/processed/players/")
 matches = {}
 files = os.listdir(raw_data_path)
 
-files = files[290:300]
+files = files[:300]
 for file in files:
+    if not file.endswith(".json"):
+        continue
     file_name = raw_data_path + file
     with open(file_name, "r") as f:
         data = json.load(f)
