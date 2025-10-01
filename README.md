@@ -1,11 +1,11 @@
 ## use
 ```shell
-git clone #repo name
+git clone https://github.com/BhagyeshKothalkar/dream11
 cd dream11
 mkdir -p data data/raw data/interim data/processed
 cd data/raw
-wget # file url
-unzip # filename
+wget https://cricsheet.org/downloads/all_json.zip
+unzip all_json.zip
 cd ../..
 cd data_processing
 python3 compute_train_data.py 
