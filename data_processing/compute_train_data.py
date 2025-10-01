@@ -9,7 +9,7 @@ from compute_player_stats import calculate_player_data
 current_path = os.getcwd()
 parent_path = os.path.dirname(current_path)
 raw_data_path = os.path.join(parent_path, "data/raw/")
-# venue_data_path = os.path.join(parent_path, 'data/interim/venue_code.csv')
+venue_data_path = os.path.join(parent_path, "data/interim/venue_code.csv")
 dst_file = os.path.join(parent_path, "data/processed/match_data.csv")
 player_data_dst = os.path.join(parent_path, "data/processed/players/")
 
@@ -30,13 +30,13 @@ files = []
 for key in sorted(matches, key=matches.get):
     files.append(key)
 
-# venue_data = pd.read_csv(venue_data_path, index_col='Venue')
+venue_data = pd.read_csv(venue_data_path, index_col="Venue")
 
 players = {}
 match_tiers = ["club", "international"]
 match_types = ["ODI", "Test", "T20"]
 duration = ["previous3", "lifetime"]
-h2h_attr = ["runs", "balls", "wickets"]
+h2h_attr = ["runs", "balls", "wickets", "avg_runs", "avg_balls", "avg_wickets"]
 player_attributes = [
     "runs",
     "wickets",
@@ -45,6 +45,8 @@ player_attributes = [
     "strike rate",
     "4s_rate",
     "6s_rate",
+    "4s_gave",  #
+    "6s_gave",  #
 ]
 fantasy_points_attr = [
     "runs",
@@ -121,6 +123,8 @@ def compute_data():
     """
     files_done = 0
     for file in files:
+        if files_done >= 10:
+            break
         print(files_done, file)
         file_name = raw_data_path + file
         with open(file_name, "r") as f:
@@ -148,9 +152,9 @@ def compute_data():
 
         # venue
         location = data["info"]["venue"]
-        # val = venue_data.loc[location]['Cluster_Assignment']
-        # values.append(val)
-        values.append(location)
+        val = venue_data.loc[location]["Cluster_Assignment"]
+        values.append(val)
+        # values.append(location)
 
         # club/international
         match_tier = data["info"]["team_type"]
@@ -192,6 +196,7 @@ def compute_data():
         calculate_player_data(
             stats, players_playing, match_type, match_tier, values, players
         )
+        print(df.shape, len(values))
         df.loc[len(df)] = copy.deepcopy(values)
 
         files_done += 1

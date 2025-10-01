@@ -32,6 +32,8 @@ def calc_stats(
             "runout(indirect)",
             "runout(direct)",
             "fantasy points",
+            "4s_gave",  #
+            "6s_gave",  #
         ]
     )
 
@@ -53,6 +55,9 @@ def calc_stats(
             0.0,
             0.0,
             0.0,
+            0.0,
+            0.0,
+            #
             0.0,
             0.0,
         ]
@@ -77,12 +82,15 @@ def calc_stats(
             0.0,
             0.0,
             0.0,
+            #
+            0.0,
+            0.0,
         ]
         player_id = players_playing[player]
         if player_id not in players.keys():
             players[player_id] = Player()
 
-    for i in range(330):
+    for i in range(22 * 15):
         values.append(0)
 
     for i in range(0, 11):
@@ -93,11 +101,15 @@ def calc_stats(
                 team2_player_obj: Player_against = team1_player_obj.played_against[
                     team2_player_id
                 ]
+                team2_player_obj.matches += 1
                 values.append(team2_player_obj.runs)
                 values.append(team2_player_obj.balls)
                 values.append(team2_player_obj.wickets)
+                values.append(team2_player_obj.avg_runs)
+                values.append(team2_player_obj.avg_balls)
+                values.append(team2_player_obj.avg_wickets)
             else:
-                for k in range(0, 3):
+                for k in range(0, 6):
                     values.append(0)
     for i in range(0, 11):
         for j in range(0, 11):
@@ -107,11 +119,15 @@ def calc_stats(
                 team1_player_obj: Player_against = team2_player_obj.played_against[
                     team1_player_id
                 ]
+                team1_player_obj.matches += 1
                 values.append(team1_player_obj.runs)
                 values.append(team1_player_obj.balls)
                 values.append(team1_player_obj.wickets)
+                values.append(team1_player_obj.avg_runs)
+                values.append(team1_player_obj.avg_balls)
+                values.append(team1_player_obj.avg_wickets)
             else:
-                for k in range(0, 3):
+                for k in range(0, 6):
                     values.append(0)
 
     df.set_index("name", inplace=True)
@@ -136,10 +152,18 @@ def calc_stats(
                 r = delivery["runs"]["batter"]
                 df.loc[batter, "runs"] += r
                 bowler_obj.runs += r
+                bowler_obj.avg_runs = (
+                    (bowler_obj.avg_runs * (bowler_obj.balls) + r)
+                    / (bowler_obj.balls + 1)
+                    if bowler_obj.balls > 0
+                    else r
+                )
                 if r == 4:
                     df.loc[batter, "4s"] += 1
+                    df.loc[bowler, "4s_gave"] += 1
                 elif r == 6:
                     df.loc[batter, "6s"] += 1
+                    df.loc[bowler, "6s_gave"] += 1
 
                 runs += delivery["runs"]["total"]
 
@@ -209,7 +233,7 @@ def calc_stats(
             df.loc[bowler, "overs"] += float(overs)
             df.loc[bowler, "runs gave"] += runs
 
-        calc_fantasy_points(df, rules[data["info"]["match_type"]])
+        calc_fantasy_points(df[:16], rules[data["info"]["match_type"]])
         df_final = df_final + df
         columns_to_zero = df.columns[:]
         df[columns_to_zero] = 0.0

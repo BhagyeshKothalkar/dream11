@@ -8,6 +8,7 @@ files = os.listdir("../data/raw")
 players = {}
 
 for file in files:
+    if not file.endswith(".json"): continue
     file_name = "../data/raw/" + file
     with open(file_name, "r") as f:
         data = json.load(f)

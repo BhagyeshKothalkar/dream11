@@ -5,7 +5,17 @@ with each match and to store the head to head data of all players
 
 
 class Player:
-    player_attr = ["runs", "wickets", "balls played", "overs", "runs gave", "4s", "6s"]
+    player_attr = [
+        "runs",
+        "wickets",
+        "balls played",
+        "overs",
+        "runs gave",
+        "4s",
+        "6s",
+        "4s_gave",
+        "6s_gave",
+    ]
     player_attributes = [
         "runs",
         "wickets",
@@ -14,6 +24,8 @@ class Player:
         "strike rate",
         "4s_rate",
         "6s_rate",
+        "4s_gave",  #
+        "6s_gave",  #
     ]
     match_tiers = ["club", "international"]
     match_types = ["ODI", "Test", "T20"]
@@ -56,6 +68,11 @@ class Player_against:
         self.runs = 0
         self.balls = 0
         self.wickets = 0
+        self.matches = 0
+        self.avg_runs = 0.0
+        self.avg_balls = 0.0
+        self.avg_wickets = 0.0
+        
 
     def set_variable(self, var_name, value):
         setattr(self, var_name, value)
