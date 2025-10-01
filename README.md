@@ -1,0 +1,24 @@
+## use
+```shell
+git clone #repo name
+cd dream11
+mkdir -p data data/raw data/interim data/processed
+cd data/raw
+wget # file url
+unzip # filename
+cd ../..
+cd data_processing
+python3 compute_train_data.py 
+```
+
+## what is achieved
+
+- the code generates training data.
+- added metrics: 4s/6s rate and 5wi
+- adding more metrics should not be an issue
+
+## current problems:
+
+- there are 12 players in ipl teams (impact sub rule). the code is hard coded that it needs 11 players and it goes on till no. of columns so need to check deeply. rn, if it causes problems, just skip that file
+- the venues are added as strings, as i thought how to encode them will be largely algorithm dependant. 
+- the match outcome is given a rudimentary encoding -1, 0, 1. -1 if team1 wins, 0 if draw.
