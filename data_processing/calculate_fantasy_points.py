@@ -296,5 +296,5 @@ def calc_fantasy_points(df, rules):
                         points += y
                         break
 
-        df.loc[index]['fantasy points'] += points
+        df.loc[index, 'fantasy points'] += points
     return df

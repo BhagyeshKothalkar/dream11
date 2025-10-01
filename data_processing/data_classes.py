@@ -1,16 +1,23 @@
 """
-Classes to create the player object to store the player data and modify it 
+Classes to create the player object to store the player data and modify it
 with each match and to store the head to head data of all players
 """
 
 
 class Player:
-    player_attr = ['runs', 'wickets', 'balls played', 'overs', 'runs gave', '4s', '6s']
-    player_attributes = ['runs', 'wickets',
-                         'balls played', 'economy', 'strike rate', '4s_rate', '6s_rate']
-    match_tiers = ['club', 'international']
-    match_types = ['ODI', 'Test', 'T20']
-    duration = ['previous3', 'lifetime']
+    player_attr = ["runs", "wickets", "balls played", "overs", "runs gave", "4s", "6s"]
+    player_attributes = [
+        "runs",
+        "wickets",
+        "balls played",
+        "economy",
+        "strike rate",
+        "4s_rate",
+        "6s_rate",
+    ]
+    match_tiers = ["club", "international"]
+    match_types = ["ODI", "Test", "T20"]
+    duration = ["previous3", "lifetime"]
 
     def __init__(self):
         self.played_against = {}
@@ -26,9 +33,10 @@ class Player:
             for types in self.match_types:
                 for duration_type in self.duration:
                     for attr in self.player_attr:
-                        s = tier + '_' + types + '_' + duration_type + '_' + attr
+                        s = tier + "_" + types + "_" + duration_type + "_" + attr
                         self.set_variable(
-                            s, 0.0 if duration_type == 'lifetime' else [0.0, 0.0, 0.0])
+                            s, 0.0 if duration_type == "lifetime" else [0.0, 0.0, 0.0]
+                        )
 
     def set_variable(self, var_name, value):
         setattr(self, var_name, value)

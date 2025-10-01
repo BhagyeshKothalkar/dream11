@@ -134,33 +134,33 @@ def calc_stats(
                 bowler_obj: Player_against = batter_obj.played_against[bowler_id]
 
                 r = delivery["runs"]["batter"]
-                df.loc[batter]["runs"] += r
+                df.loc[batter, "runs"] += r
                 bowler_obj.runs += r
                 if r == 4:
-                    df.loc[batter]["4s"] += 1
+                    df.loc[batter, "4s"] += 1
                 elif r == 6:
-                    df.loc[batter]["6s"] += 1
+                    df.loc[batter, "6s"] += 1
 
                 runs += delivery["runs"]["total"]
 
                 if "extras" in delivery.keys():
                     extra_types = delivery["extras"].keys()
                     if "legbyes" in extra_types and len(extra_types) == 1:
-                        df.loc[batter]["balls played"] += 1
+                        df.loc[batter, "balls played"] += 1
                         fair_deliveries += 1
                 else:
-                    df.loc[batter]["balls played"] += 1
+                    df.loc[batter, "balls played"] += 1
                     fair_deliveries += 1
                     bowler_obj.balls += 1
 
                 if "wickets" in delivery.keys():
                     for wicket in delivery["wickets"]:
                         player = wicket["player_out"]
-                        df.loc[player]["out"] += 1
-                        if df.loc[player]["runs"] == 0:
-                            df.loc[player]["ducks"] += 1
+                        df.loc[player, "out"] += 1
+                        if df.loc[player, "runs"] == 0:
+                            df.loc[player, "ducks"] += 1
                         if wicket["kind"] == "caught":
-                            df.loc[bowler]["wickets"] += 1
+                            df.loc[bowler, "wickets"] += 1
                             bowler_obj.wickets += 1
                             if (
                                 "name" not in wicket["fielders"][0].keys()
@@ -168,14 +168,14 @@ def calc_stats(
                             ):
                                 continue
                             fielder = wicket["fielders"][0]["name"]
-                            df.loc[fielder]["catches"] += 1
+                            df.loc[fielder, "catches"] += 1
                         elif wicket["kind"] == "caught and bowled":
-                            df.loc[bowler]["wickets"] += 1
-                            df.loc[bowler]["catches"] += 1
+                            df.loc[bowler, "wickets"] += 1
+                            df.loc[bowler, "catches"] += 1
                             bowler_obj.wickets += 1
                         elif wicket["kind"] == "bowled" or wicket["kind"] == "bowled":
-                            df.loc[bowler]["wickets"] += 1
-                            df.loc[bowler]["lbw/bowled"] += 1
+                            df.loc[bowler, "wickets"] += 1
+                            df.loc[bowler, "lbw/bowled"] += 1
                             bowler_obj.wickets += 1
                         elif wicket["kind"] == "run out":
                             if "fielders" in wicket.keys():
@@ -185,11 +185,11 @@ def calc_stats(
                                     if "substitute" in wicket["fielders"][0].keys():
                                         pass
                                     else:
-                                        df.loc[fielder1]["runout(indirect)"] += 1
+                                        df.loc[fielder1, "runout(indirect)"] += 1
                                     if "substitute" in wicket["fielders"][1].keys():
                                         pass
                                     else:
-                                        df.loc[fielder2]["runout(indirect)"] += 1
+                                        df.loc[fielder2, "runout(indirect)"] += 1
                                 else:
                                     if (
                                         "name" not in wicket["fielders"][0].keys()
@@ -197,17 +197,17 @@ def calc_stats(
                                     ):
                                         continue
                                     fielder = wicket["fielders"][0]["name"]
-                                    df.loc[fielder]["runout(direct)"] += 1
+                                    df.loc[fielder,"runout(direct)"] += 1
                             else:
-                                df.loc[bowler]["runout(direct)"] += 1
+                                df.loc[bowler, "runout(direct)"] += 1
 
             overs = fair_deliveries * 1.0 / num_balls_per_over
 
             if overs == 1 and runs == 0:
-                df.loc[bowler]["maidens"] += 1
+                df.loc[bowler, "maidens"] += 1
 
-            df.loc[bowler]["overs"] += float(overs)
-            df.loc[bowler]["runs gave"] += runs
+            df.loc[bowler, "overs"] += float(overs)
+            df.loc[bowler, "runs gave"] += runs
 
         calc_fantasy_points(df, rules[data["info"]["match_type"]])
         df_final = df_final + df

@@ -119,7 +119,13 @@ def calculate_player_data(
 
                             else:
                                 boundaries_list = player.get_variable(
-                                    tier + "_" + types + "_" + duration_type + attr
+                                    tier
+                                    + "_"
+                                    + types
+                                    + "_"
+                                    + duration_type
+                                    + "_"
+                                    + attr
                                 )
                                 balls_list = player.get_variable(
                                     tier
