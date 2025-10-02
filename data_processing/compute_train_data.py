@@ -36,7 +36,7 @@ players = {}
 match_tiers = ["club", "international"]
 match_types = ["ODI", "Test", "T20"]
 duration = ["previous3", "lifetime"]
-h2h_attr = ["runs", "balls", "wickets", "avg_runs", "avg_balls", "avg_wickets"]
+h2h_attr = ["runs", "balls", "wickets", "avg_runs", "wicket_rate"]
 player_attributes = [
     "runs",
     "wickets",

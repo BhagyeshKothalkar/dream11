@@ -97,7 +97,7 @@ def add_new_data(file):
         player_info_data[player] = player_info
     for player in player_info_data.keys():
         player_data = player_info_data[player]
-        with open(player_data_dst + 'playerssss' + player + '.json', 'w') as f:
+        with open(player_data_dst + player + '.json', 'w') as f:
             f.write(json.dumps(player_data))
 
 
@@ -107,7 +107,7 @@ def main():
     current_path = os.getcwd()
     parent_path = os.path.dirname(current_path)
     player_data_dst = os.path.join(parent_path, 'data/processed/players/')
-    add_new_data('../data/raw/64815.json')
+    # add_new_data('../data/raw/64815.json') #test
 
 
 main()

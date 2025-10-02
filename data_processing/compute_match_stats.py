@@ -101,15 +101,13 @@ def calc_stats(
                 team2_player_obj: Player_against = team1_player_obj.played_against[
                     team2_player_id
                 ]
-                team2_player_obj.matches += 1
                 values.append(team2_player_obj.runs)
                 values.append(team2_player_obj.balls)
                 values.append(team2_player_obj.wickets)
                 values.append(team2_player_obj.avg_runs)
-                values.append(team2_player_obj.avg_balls)
-                values.append(team2_player_obj.avg_wickets)
+                values.append(team2_player_obj.wicket_rate)
             else:
-                for k in range(0, 6):
+                for k in range(0, 5):
                     values.append(0)
     for i in range(0, 11):
         for j in range(0, 11):
@@ -119,15 +117,13 @@ def calc_stats(
                 team1_player_obj: Player_against = team2_player_obj.played_against[
                     team1_player_id
                 ]
-                team1_player_obj.matches += 1
                 values.append(team1_player_obj.runs)
                 values.append(team1_player_obj.balls)
                 values.append(team1_player_obj.wickets)
                 values.append(team1_player_obj.avg_runs)
-                values.append(team1_player_obj.avg_balls)
-                values.append(team1_player_obj.avg_wickets)
+                values.append(team1_player_obj.wicket_rate)
             else:
-                for k in range(0, 6):
+                for k in range(0, 5):
                     values.append(0)
 
     df.set_index("name", inplace=True)
@@ -186,6 +182,12 @@ def calc_stats(
                         if wicket["kind"] == "caught":
                             df.loc[bowler, "wickets"] += 1
                             bowler_obj.wickets += 1
+                            bowler_obj.wicket_rate = (
+                                (bowler_obj.wicket_rate * (bowler_obj.balls) + 1)
+                                / (bowler_obj.balls + 1)
+                                if bowler_obj.balls > 0
+                                else 1
+                            )
                             if (
                                 "name" not in wicket["fielders"][0].keys()
                                 or "substitute" in wicket["fielders"][0].keys()
@@ -197,10 +199,22 @@ def calc_stats(
                             df.loc[bowler, "wickets"] += 1
                             df.loc[bowler, "catches"] += 1
                             bowler_obj.wickets += 1
-                        elif wicket["kind"] == "bowled" or wicket["kind"] == "bowled":
+                            bowler_obj.wicket_rate = (
+                                (bowler_obj.wicket_rate * (bowler_obj.balls) + 1)
+                                / (bowler_obj.balls + 1)
+                                if bowler_obj.balls > 0
+                                else 1
+                            )
+                        elif wicket["kind"] == "bowled" or wicket["kind"] == "lbw":
                             df.loc[bowler, "wickets"] += 1
                             df.loc[bowler, "lbw/bowled"] += 1
                             bowler_obj.wickets += 1
+                            bowler_obj.wicket_rate = (
+                                (bowler_obj.wicket_rate * (bowler_obj.balls) + 1)
+                                / (bowler_obj.balls + 1)
+                                if bowler_obj.balls > 0
+                                else 1
+                            )
                         elif wicket["kind"] == "run out":
                             if "fielders" in wicket.keys():
                                 if len(wicket["fielders"]) == 2:

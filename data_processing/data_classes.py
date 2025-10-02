@@ -68,11 +68,9 @@ class Player_against:
         self.runs = 0
         self.balls = 0
         self.wickets = 0
-        self.matches = 0
         self.avg_runs = 0.0
-        self.avg_balls = 0.0
-        self.avg_wickets = 0.0
-        
+        self.wicket_rate = 0.0
+
 
     def set_variable(self, var_name, value):
         setattr(self, var_name, value)
